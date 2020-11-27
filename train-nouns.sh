@@ -31,11 +31,11 @@ case "$MODEL" in
 esac
 
 python3 embed.py \
-  -checkpoint nouns.bin \
+  -checkpoint nouns.pth \
   -dset wordnet/noun_closure.csv \
-  -epochs 10 \
+  -epochs 2 \
   -negs 50 \
-  -burnin 10 \
+  -burnin 1 \
   -dampening 0.75 \
   -ndproc 4 \
   -eval_each 100 \
