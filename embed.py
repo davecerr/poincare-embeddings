@@ -144,9 +144,10 @@ def main():
 
     # setup debugging and logigng
     log_level = logging.DEBUG if opt.debug else logging.INFO
-    log = logging.getLogger('lorentz')
+    log = logging.getLogger('poincare')
     logging.basicConfig(level=log_level, format='%(message)s', stream=sys.stdout)
 
+    # attempt to find GPU
     if opt.gpu >= 0 and opt.train_threads > 1:
         opt.gpu = -1
         log.warning(f'Specified hogwild training with GPU, defaulting to CPU...')
@@ -156,6 +157,7 @@ def main():
     # set device
     device = th.device(f'cuda:{opt.gpu}' if opt.gpu >= 0 else 'cpu')
 
+    # read data (edge set is fed as .csv in train_nouns.sh)
     if 'csv' in opt.dset:
         log.info('Using edge list dataloader')
         idx, objects, weights = load_edge_list(opt.dset, opt.sym)
@@ -169,8 +171,11 @@ def main():
             opt.burnin > 0, sample_dampening=opt.dampening)
         objects = dset['objects']
 
+    # create model - read buld_model fn in /hype/__init__.py to see how mfold,
+    # dim, loss etc are set up. We store these in model below
+    # (model is object of DistanceEnergyFunction class which inherits from EnergyFunction class)
     model = build_model(opt, len(objects))
-
+    log.info(f'model is = {model}')
     # set burnin parameters
     data.neg_multiplier = opt.neg_multiplier
     train._lr_multiplier = opt.burnin_multiplier
@@ -178,8 +183,19 @@ def main():
     # Build config string for log
     log.info(f'json_conf: {json.dumps(vars(opt))}')
 
+    # adjust lr (train_nouns.sh defines opt.lr_type as constant)
     if opt.lr_type == 'scale':
         opt.lr = opt.lr * opt.batchsize
+
+    # Read model params dict. The model is DistanceEnergyFunction
+    # (see hype/__init__.py for reason why this is the model)
+    # Read EnergyFunction class to see what these params are - they are
+    # the expected input to RiemannianSGD class
+    log.info(f'\n\n------------------------------\nCheck expm, logm, ptransp defined for Poincare. \nBound method should belong to PoincareManifold not EuclideanManifold\n------------------------------\n\n')
+    log.info(f'Model expm = {model.optim_params()[0]["expm"]}')
+    log.info(f'Model logm = {model.optim_params()[0]["logm"]}')
+    log.info(f'Model ptransp = {model.optim_params()[0]["ptransp"]}')
+    log.info(f'Model rgrad = {model.optim_params()[0]["rgrad"]}')
 
     # setup optimizer
     optimizer = RiemannianSGD(model.optim_params(), lr=opt.lr)

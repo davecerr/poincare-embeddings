@@ -49,6 +49,7 @@ def train(
 
         loader_iter = tqdm(loader) if progress and rank == 1 else loader
         for i_batch, (inputs, targets) in enumerate(loader_iter):
+            # print(inputs)
             elapsed = timeit.default_timer() - t_start
             inputs = inputs.to(device)
             targets = targets.to(device)

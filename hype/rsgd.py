@@ -6,7 +6,7 @@
 # LICENSE file in the root directory of this source tree.
 
 from torch.optim.optimizer import Optimizer, required
-
+import logging
 
 class RiemannianSGD(Optimizer):
     r"""Riemannian stochastic gradient descent.
@@ -32,6 +32,14 @@ class RiemannianSGD(Optimizer):
         }
         super(RiemannianSGD, self).__init__(params, defaults)
 
+
+
+    # We instantiate with rgrad (poincare.py) as well as
+    # lr, expm (inherited from Euclidean if undefined for Poincare)
+    # as well as any other model.optim_params e.g. lr etc
+
+
+
     def step(self, lr=None, counts=None, **kwargs):
         """Performs a single optimization step.
 
@@ -39,6 +47,9 @@ class RiemannianSGD(Optimizer):
             lr (float, optional): learning rate for the current update.
         """
         loss = None
+
+        #log = logging.getLogger('poincare')
+        #log.info(self.param_groups)
 
         for group in self.param_groups:
             for p in group['params']:
@@ -51,6 +62,7 @@ class RiemannianSGD(Optimizer):
                 d_p = p.grad.data
                 # make sure we have no duplicates in sparse tensor
                 if d_p.is_sparse:
+                    # print("Hello")
                     d_p = d_p.coalesce()
                 d_p = rgrad(p.data, d_p)
                 d_p.mul_(-lr)

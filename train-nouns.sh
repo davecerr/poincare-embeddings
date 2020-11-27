@@ -7,7 +7,7 @@
 # Script to reproduct results
 
 DIMS="10"
-MODEL="lorentz"
+MODEL="poincare"
 
 while true; do
   case "$1" in
@@ -35,7 +35,7 @@ python3 embed.py \
   -dset wordnet/noun_closure.csv \
   -epochs 1500 \
   -negs 50 \
-  -burnin 20 \
+  -burnin 0 \
   -dampening 0.75 \
   -ndproc 4 \
   -eval_each 100 \
@@ -44,7 +44,8 @@ python3 embed.py \
   -burnin_multiplier 0.01 \
   -neg_multiplier 0.1 \
   -lr_type constant \
-  -train_threads 5 \
+  -gpu 0 \
+  -train_threads 2 \
   -dampening 1.0 \
   -batchsize 50 \
   -manifold "$MODEL" \

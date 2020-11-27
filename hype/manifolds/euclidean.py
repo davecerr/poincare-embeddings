@@ -8,7 +8,7 @@
 from .manifold import Manifold
 import torch as th
 import numpy as np
-
+import logging
 
 class EuclideanManifold(Manifold):
     __slots__ = ["max_norm"]
@@ -44,6 +44,8 @@ class EuclideanManifold(Manifold):
         return (num / denom).acos()
 
     def expm(self, p, d_p, normalize=False, lr=None, out=None):
+        #log = logging.getLogger('poincare')
+        #log.info('WARNING: running inherited retraction inherited from Euclidean expm fn rather than Poincare exponential map')
         if lr is not None:
             d_p.mul_(-lr)
         if out is None:
@@ -51,11 +53,14 @@ class EuclideanManifold(Manifold):
         out.add_(d_p)
         if normalize:
             self.normalize(out)
+        print(f"p = {p}")
+        print(f"d_p = {d_p}")
         return out
 
     def logm(self, p, d_p, out=None):
         return p - d_p
 
     def ptransp(self, p, x, y, v):
+        print("USING EUCLIDEAN RETRACTION!!!!")
         ix, v_ = v._indices().squeeze(), v._values()
         return p.index_copy_(0, ix, v_)

@@ -6,7 +6,7 @@
 # LICENSE file in the root directory of this source tree.
 
 python3 embed.py \
-       -dim 5 \
+       -dim 2 \
        -lr 0.3 \
        -epochs 300 \
        -negs 50 \

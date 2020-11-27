@@ -11,7 +11,7 @@ from hype.common import acosh
 from .manifold import Manifold
 import numpy as np
 from torch.nn import Embedding
-
+import time
 
 class LorentzManifold(Manifold):
     __slots__ = ["eps", "_eps", "norm_clip", "max_norm", "debug"]
@@ -100,7 +100,9 @@ class LorentzManifold(Manifold):
         """Exponential map for hyperboloid"""
         if out is None:
             out = p
+        # print("LORENTZIAN EXPONENTIAL MAP")
         if d_p.is_sparse:
+            # t0 = time.time()
             ix, d_val = d_p._indices().squeeze(), d_p._values()
             # This pulls `ix` out of the original embedding table, which could
             # be in a corrupted state.  normalize it to fix it back to the
@@ -116,9 +118,19 @@ class LorentzManifold(Manifold):
             t = th.clamp(nd_p, max=self.norm_clip)
             nd_p.clamp_(min=self.eps)
             newp = (th.cosh(t) * p_val).addcdiv_(th.sinh(t) * d_val, nd_p)
+            # print("is p_val sparse: {}".format(p_val.is_sparse))
+            # print("is nd_p sparse: {}".format(nd_p.is_sparse))
+            # print("is p sparse: {}".format(p.is_sparse))
+            # print("is newp sparse: {}".format(newp.is_sparse))
+            print(f"p = {p}")
+            print(f"d_p = {d_p}")
+            # print(newp)
             if normalize:
                 newp = self.normalize(newp)
+                print(newp.shape)
             p.index_copy_(0, ix, newp)
+            # t1 = time.time()
+            # print("iteration time = {}".format(t1-t0))
         else:
             if lr is not None:
                 d_p.narrow(-1, 0, 1).mul_(-1)
@@ -146,6 +158,7 @@ class LorentzManifold(Manifold):
 
     def ptransp(self, x, y, v, ix=None, out=None):
         """Parallel transport for hyperboloid"""
+        # print("LORENTZIAN PARALLEL TRANSPORT")
         if ix is not None:
             v_ = v
             x_ = x.index_select(0, ix)
