@@ -128,7 +128,7 @@ class PoincareManifold(EuclideanManifold):
         # print("v shape = {}".format(v.shape))
         x = (M.t() / v).t()
         # print(f"x shape = {x.shape}")
-        return th.sparse.FloatTensor(i, x, s_m.shape) 
+        return th.sparse.FloatTensor(i, x, s_m.shape)
 
     def sparsevec_densemat_mul(self, s, d):
         i = s._indices()
@@ -393,7 +393,7 @@ class PoincareManifold(EuclideanManifold):
             # print("denominator is sparse: {}".format(denominator.is_sparse))
             result = self.sparsemat_div_sparsevec(numerator, denominator)
             # result = self.sparsevec_sparsevec_div(numerator, denominator)
-            print(f"result = {result}")
+            #print(f"result = {result}")
             # print(ix)
             # print("p shape = {}".format(p.shape))
             # print("result shape = {}".format(result.shape))
