@@ -21,6 +21,7 @@ import shutil
 from hype.graph_dataset import BatchedDataset
 from hype import MANIFOLDS, MODELS, build_model
 from hype.hypernymy_eval import main as hype_eval
+from torch.nn import Embedding
 
 th.manual_seed(42)
 np.random.seed(42)
