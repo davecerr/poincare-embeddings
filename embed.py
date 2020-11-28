@@ -38,6 +38,20 @@ def reconstruction_eval(adj, opt, epoch, elapsed, loss, pth, best):
 
     meanrank, maprank = eval_reconstruction(adj, model)
     sqnorms = manifold_file_norm(model.lt)
+
+    filename = 'eval_log.csv'
+    if os.path.exists(filename):
+        append_write = 'a' # append if already exists
+    else:
+        # write header
+        with open(filename, 'w') as file:
+            writer = csv.writer(file)
+            writer.writerow(["epoch", "elapsed", "loss", "sqnorm_min", "sqnorm_avg", "sqnorm_max", "mean_rank", "map_rank", "best"])
+            append_write = 'a' # make a new file if not
+    with open(filename, append_write) as file:
+        writer = csv.writer(file)
+        writer.writerow([epoch, elapsed, loss, sqnorms.min().item(), sqnorms.mean().item(), sqnorms.max().item(), meanrank, maprank, bool(best is None or loss < best['loss'])])
+
     return {
         'epoch': epoch,
         'elapsed': elapsed,
