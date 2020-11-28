@@ -25,6 +25,10 @@ from hype.hypernymy_eval import main as hype_eval
 th.manual_seed(42)
 np.random.seed(42)
 
+def manifold_file_norm(u):
+    if isinstance(u, Embedding):
+        u = u.weight
+    return u.pow(2).sum(dim=-1).sqrt()
 
 def reconstruction_eval(adj, opt, epoch, elapsed, loss, pth, best):
     chkpnt = th.load(pth, map_location='cpu')
@@ -32,15 +36,14 @@ def reconstruction_eval(adj, opt, epoch, elapsed, loss, pth, best):
     model.load_state_dict(chkpnt['model'])
 
     meanrank, maprank = eval_reconstruction(adj, model)
-    print(f"model shape = {model.lt}")
-    # sqnorms = model.manifold.norm(model.lt)
+    sqnorms = manifold_file_norm(model.lt)
     return {
         'epoch': epoch,
         'elapsed': elapsed,
         'loss': loss,
-        # 'sqnorm_min': sqnorms.min().item(),
-        # 'sqnorm_avg': sqnorms.mean().item(),
-        # 'sqnorm_max': sqnorms.max().item(),
+        'sqnorm_min': sqnorms.min().item(),
+        'sqnorm_avg': sqnorms.mean().item(),
+        'sqnorm_max': sqnorms.max().item(),
         'mean_rank': meanrank,
         'map_rank': maprank,
         'best': bool(best is None or loss < best['loss']),
