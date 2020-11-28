@@ -50,5 +50,5 @@ python3 embed.py \
   -batchsize 50 \
   -manifold "$MODEL" \
   -dim "$DIMS" \
-  -eval hypernymy \
+  -eval reconstruction \
   "${EXTRA_ARGS[@]}"
