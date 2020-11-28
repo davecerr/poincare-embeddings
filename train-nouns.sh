@@ -38,7 +38,7 @@ python3 embed.py \
   -burnin 20 \
   -dampening 0.75 \
   -ndproc 4 \
-  -eval_each 1 \
+  -eval_each 100 \
   -fresh \
   -sparse \
   -burnin_multiplier 0.01 \
