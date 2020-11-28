@@ -260,7 +260,7 @@ def main():
     if hasattr(model, 'w_avg'):
         model.w_avg = model.w_avg.to(device)
     if opt.train_threads > 1:
-        log.info("control not being used")
+        log.info("multi-threaded")
         threads = []
         model = model.share_memory()
         args = (device, model, data, optimizer, opt, log)
@@ -271,7 +271,7 @@ def main():
             threads[-1].start()
         [t.join() for t in threads]
     else:
-        log.info("control being used")
+        log.info("single-threaded")
         train.train(device, model, data, optimizer, opt, log, ctrl=control,
             progress=not opt.quiet)
     controlQ.put(None)

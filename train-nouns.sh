@@ -33,12 +33,12 @@ esac
 python3 embed.py \
   -checkpoint nouns.bin \
   -dset wordnet/noun_closure.csv \
-  -epochs 2 \
+  -epochs 1 \
   -negs 50 \
   -burnin 0 \
   -dampening 0.75 \
   -ndproc 4 \
-  -eval_each 2 \
+  -eval_each 1 \
   -fresh \
   -sparse \
   -burnin_multiplier 0.01 \
