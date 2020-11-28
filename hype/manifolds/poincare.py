@@ -56,6 +56,7 @@ class PoincareManifold(EuclideanManifold):
         return th.log(x+(x**2-1)**0.5)
 
     def norm(self, u):
+        print(f"u shape = {u.shape}")
         return th.sqrt(th.sum(th.pow(u, 2), dim=-1))
 
     def sqnorm(self, u):
