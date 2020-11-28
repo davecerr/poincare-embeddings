@@ -35,7 +35,7 @@ python3 embed.py \
   -dset wordnet/noun_closure.csv \
   -epochs 5 \
   -negs 50 \
-  -burnin 1 \
+  -burnin 0 \
   -dampening 0.75 \
   -ndproc 4 \
   -eval_each 1 \
@@ -50,4 +50,5 @@ python3 embed.py \
   -batchsize 50 \
   -manifold "$MODEL" \
   -dim "$DIMS" \
+  -eval hypernymy \
   "${EXTRA_ARGS[@]}"
