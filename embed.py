@@ -76,6 +76,7 @@ def async_eval(adj, q, logQ, opt):
         epoch, elapsed, loss, pth = temp
         if opt.eval == 'reconstruction':
             lmsg = reconstruction_eval(adj, opt, epoch, elapsed, loss, pth, best)
+            print(f"lmsg = {lmsg}")
         elif opt.eval == 'hypernymy':
             lmsg = hypernymy_eval(epoch, elapsed, loss, pth, best)
         else:
