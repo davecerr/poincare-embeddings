@@ -8,7 +8,7 @@
 python3 embed.py \
        -dim 2 \
        -lr 0.3 \
-       -epochs 10 \
+       -epochs 300 \
        -negs 50 \
        -burnin 20 \
        -ndproc 4 \
