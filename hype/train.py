@@ -97,7 +97,7 @@ def train(
 
                 with open(filename, append_write) as file:
                     writer = csv.writer(file)
-                    writer.writerow([epochs, elapsed, th.mean(epoch_loss).item()])
+                    writer.writerow([epoch, elapsed, th.mean(epoch_loss).item()])
 
                 log.info(
                     'json_stats: {'
