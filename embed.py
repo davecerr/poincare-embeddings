@@ -41,7 +41,7 @@ def reconstruction_eval(adj, opt, epoch, elapsed, loss, pth, best):
     meanrank, maprank = eval_reconstruction(adj, model)
     sqnorms = manifold_file_norm(model.lt)
 
-    filename = 'eval_log.csv'
+    filename = 'eval_log_nouns.csv'
     if os.path.exists(filename):
         append_write = 'a' # append if already exists
     else:

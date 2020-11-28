@@ -85,7 +85,7 @@ def train(
                 with th.no_grad():
                     ctrl(model, epoch, elapsed, th.mean(epoch_loss).item())
             else:
-                filename = 'train_log.csv'
+                filename = 'train_log_nouns.csv'
                 if os.path.exists(filename):
                     append_write = 'a' # append if already exists
                 else:
