@@ -260,6 +260,7 @@ def main():
     if hasattr(model, 'w_avg'):
         model.w_avg = model.w_avg.to(device)
     if opt.train_threads > 1:
+        log.info("control not being used")
         threads = []
         model = model.share_memory()
         args = (device, model, data, optimizer, opt, log)
