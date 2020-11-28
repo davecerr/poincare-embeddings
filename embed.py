@@ -61,10 +61,9 @@ def hypernymy_eval(epoch, elapsed, loss, pth, best):
 
 
 def async_eval(adj, q, logQ, opt):
-    print("print working")
-    log.info("log 1 working")
-    log = logging.getLogger('poincare')
-    log.info("log 2 working")
+    # print("print working")
+    # log = logging.getLogger('poincare')
+    # log.info("log 2 working")
     best = None
     while True:
         temp = q.get()
