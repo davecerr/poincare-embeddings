@@ -68,24 +68,35 @@ def train(
             optimizer.step(lr=lr, counts=counts)
             epoch_loss[i_batch] = loss.cpu().item()
         if rank == 1:
-            log.info("present and correct")
             if hasattr(data, 'avg_queue_size'):
                 qsize = data.avg_queue_size()
                 misses = data.queue_misses()
                 log.info(f'Average qsize for epoch was {qsize}, num_misses={misses}')
 
-            log.info(f"opt.eval_each = {opt.eval_each}")
+            # log.info(f"opt.eval_each = {opt.eval_each}")
             log.info(f"epoch = {epoch}")
-            log.info(f"mod condition = {epoch % opt.eval_each == (opt.eval_each - 1)}")
+            # log.info(f"mod condition = {epoch % opt.eval_each == (opt.eval_each - 1)}")
             if queue is not None:
-                log.info("queue is not None")
                 queue.put((epoch, elapsed, th.mean(epoch_loss).item(), model))
             elif ctrl is not None and epoch % opt.eval_each == (opt.eval_each - 1):
-                log.info("control is not None")
+                log.info("---------- evaluating ----------")
                 with th.no_grad():
                     ctrl(model, epoch, elapsed, th.mean(epoch_loss).item())
             else:
-                log.info("else activated")
+                filename = 'train_log.csv'
+                if os.path.exists(filename):
+                    append_write = 'a' # append if already exists
+                else:
+                    # write header
+                    with open(filename, 'w') as file:
+                        writer = csv.writer(file)
+                        writer.writerow(["epochs", "elapsed", "mean loss"])
+                        append_write = 'a' # make a new file if not
+
+                with open(filename, append_write) as file:
+                    writer = csv.writer(file)
+                    writer.writerow([epochs, elapsed, th.mean(epoch_loss).item()])
+
                 log.info(
                     'json_stats: {'
                     f'"epoch": {epoch}, '
