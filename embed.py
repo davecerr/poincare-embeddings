@@ -32,15 +32,15 @@ def reconstruction_eval(adj, opt, epoch, elapsed, loss, pth, best):
     model.load_state_dict(chkpnt['model'])
 
     meanrank, maprank = eval_reconstruction(adj, model)
-    print(f"model shape = {model.lt.to_dense}")
-    sqnorms = model.manifold.norm(model.lt)
+    print(f"model shape = {model.lt}")
+    # sqnorms = model.manifold.norm(model.lt)
     return {
         'epoch': epoch,
         'elapsed': elapsed,
         'loss': loss,
-        'sqnorm_min': sqnorms.min().item(),
-        'sqnorm_avg': sqnorms.mean().item(),
-        'sqnorm_max': sqnorms.max().item(),
+        # 'sqnorm_min': sqnorms.min().item(),
+        # 'sqnorm_avg': sqnorms.mean().item(),
+        # 'sqnorm_max': sqnorms.max().item(),
         'mean_rank': meanrank,
         'map_rank': maprank,
         'best': bool(best is None or loss < best['loss']),
