@@ -74,6 +74,9 @@ def train(
                 misses = data.queue_misses()
                 log.info(f'Average qsize for epoch was {qsize}, num_misses={misses}')
 
+            log.info(f"opt.eval_each = {opt.eval_each}")
+            log.info(f"epoch = {epoch}")
+            log.info(f"mod condition = {epoch % opt.eval_each == (opt.eval_each - 1)}")
             if queue is not None:
                 log.info("queue is not None")
                 queue.put((epoch, elapsed, th.mean(epoch_loss).item(), model))
