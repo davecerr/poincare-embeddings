@@ -68,17 +68,21 @@ def train(
             optimizer.step(lr=lr, counts=counts)
             epoch_loss[i_batch] = loss.cpu().item()
         if rank == 1:
+            log.info("present and correct")
             if hasattr(data, 'avg_queue_size'):
                 qsize = data.avg_queue_size()
                 misses = data.queue_misses()
                 log.info(f'Average qsize for epoch was {qsize}, num_misses={misses}')
 
             if queue is not None:
+                log.info("queue is not None")
                 queue.put((epoch, elapsed, th.mean(epoch_loss).item(), model))
             elif ctrl is not None and epoch % opt.eval_each == (opt.eval_each - 1):
+                log.info("control is not None")
                 with th.no_grad():
                     ctrl(model, epoch, elapsed, th.mean(epoch_loss).item())
             else:
+                log.info("else activated")
                 log.info(
                     'json_stats: {'
                     f'"epoch": {epoch}, '
@@ -87,6 +91,7 @@ def train(
                     '}'
                 )
             if checkpointer and hasattr(ctrl, 'checkpoint') and ctrl.checkpoint:
+                log.info("checkpointer active")
                 checkpointer(model, epoch, epoch_loss)
 
         gc.collect()
