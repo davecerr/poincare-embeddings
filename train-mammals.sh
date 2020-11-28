@@ -17,7 +17,7 @@ python3 embed.py \
        -dset wordnet/mammal_closure.csv \
        -checkpoint mammals.pth \
        -batchsize 10 \
-       -eval_each 1 \
+       -eval_each 5 \
        -fresh \
        -sparse \
        -train_threads 2

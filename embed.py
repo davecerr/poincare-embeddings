@@ -265,7 +265,6 @@ def main():
         model = model.share_memory()
         args = (device, model, data, optimizer, opt, log)
         kwargs = {'ctrl': control, 'progress' : not opt.quiet}
-        log.info(control)
         for i in range(opt.train_threads):
             kwargs['rank'] = i
             threads.append(mp.Process(target=train.train, args=args, kwargs=kwargs))
