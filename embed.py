@@ -270,6 +270,7 @@ def main():
             threads[-1].start()
         [t.join() for t in threads]
     else:
+        log.info("control being used")
         train.train(device, model, data, optimizer, opt, log, ctrl=control,
             progress=not opt.quiet)
     controlQ.put(None)
