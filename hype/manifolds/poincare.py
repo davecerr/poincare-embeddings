@@ -225,13 +225,14 @@ class PoincareManifold(EuclideanManifold):
         # if verbose:
             # print(f"dim = {theta.shape[1]}")
             # print(f"theta shape: {theta.shape}")
-
+        print("ALBALB")
         if nu.is_sparse:
             ix, d_val = nu._indices().squeeze(), nu._values()
             # get modulus of nu
             # t0 = time.time()
             mod_nu = self.sparse_norm(nu) # d-1 dims
-            print(f"mod_nu CUDA = {mod_nu.is_cuda}")
+            print("BLABLA")
+            print(type(mod_nu))
             # print(f"|nu| ={mod_nu}")
             # t1 = time.time()
             # print("mod_nu calculation time = {}".format(t1-t0))
