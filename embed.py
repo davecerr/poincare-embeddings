@@ -178,7 +178,11 @@ def main():
         log.warning(f'Specified hogwild training with GPU, defaulting to CPU...')
 
     # set default tensor type
-    th.set_default_tensor_type('torch.cuda.DoubleTensor')
+    if opt.gpu == -1:
+        th.set_default_tensor_type('torch.DoubleTensor')
+    if opt.gpu == 1:
+        th.set_default_tensor_type('torch.cuda.DoubleTensor')
+        
     # set device
     device = th.device(f'cuda:{opt.gpu}' if opt.gpu >= 0 else 'cpu')
     print(f"\n\n opt.gpu = {opt.gpu} \n DEVICE = {device} \n\n")
