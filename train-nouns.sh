@@ -45,7 +45,7 @@ python3 embed.py \
   -neg_multiplier 0.1 \
   -lr_type constant \
   -gpu 1 \
-  -train_threads 2 \
+  -train_threads 1 \
   -dampening 1.0 \
   -batchsize 50 \
   -manifold "$MODEL" \
