@@ -231,8 +231,6 @@ class PoincareManifold(EuclideanManifold):
             # get modulus of nu
             # t0 = time.time()
             mod_nu = self.sparse_norm(nu) # d-1 dims
-            print("BLABLA")
-            print(type(mod_nu))
             # print(f"|nu| ={mod_nu}")
             # t1 = time.time()
             # print("mod_nu calculation time = {}".format(t1-t0))

@@ -182,9 +182,9 @@ def main():
         th.set_default_tensor_type('torch.DoubleTensor')
     if opt.gpu == 1:
         th.set_default_tensor_type('torch.cuda.DoubleTensor')
-        
+
     # set device
-    device = th.device(f'cuda:{opt.gpu}' if opt.gpu >= 0 else 'cpu')
+    device = th.device(f'cuda:{opt.gpu-1}' if opt.gpu >= 0 else 'cpu')
     print(f"\n\n opt.gpu = {opt.gpu} \n DEVICE = {device} \n\n")
 
     # read data (edge set is fed as .csv in train_nouns.sh)
