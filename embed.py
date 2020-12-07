@@ -181,7 +181,8 @@ def main():
     th.set_default_tensor_type('torch.DoubleTensor')
     # set device
     device = th.device(f'cuda:{opt.gpu}' if opt.gpu >= 0 else 'cpu')
-
+    print(f"DEVICE = {device}")
+    
     # read data (edge set is fed as .csv in train_nouns.sh)
     if 'csv' in opt.dset:
         log.info('Using edge list dataloader')
