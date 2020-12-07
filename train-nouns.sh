@@ -44,7 +44,7 @@ python3 embed.py \
   -burnin_multiplier 0.01 \
   -neg_multiplier 0.1 \
   -lr_type constant \
-  -gpu 0 \
+  -gpu 1 \
   -train_threads 2 \
   -dampening 1.0 \
   -batchsize 50 \
