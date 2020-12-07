@@ -225,7 +225,6 @@ class PoincareManifold(EuclideanManifold):
         # if verbose:
             # print(f"dim = {theta.shape[1]}")
             # print(f"theta shape: {theta.shape}")
-        print("ALBALB")
         if nu.is_sparse:
             ix, d_val = nu._indices().squeeze(), nu._values()
             # get modulus of nu
